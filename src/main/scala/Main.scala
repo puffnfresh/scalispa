@@ -9,7 +9,7 @@ import me.qmx.jitescript.util.CodegenUtils.{ p, ci, sig }
 
 import org.objectweb.asm.Opcodes._
 
-trait Node
+sealed trait Node
 case class SExp(l: List[Node]) extends Node
 case class SInt(i: Int) extends Node
 case class SIdent(s: String) extends Node
@@ -26,7 +26,7 @@ object Evaluator {
   def compile(b: CodeBlock, n: Node) {
     n match {
       case SExp(Nil) => {}
-      case SExp(x::xs) => {
+      case SExp(x :: xs) => {
         xs.foreach(compile(b, _))
         compile(b, x)
       }
